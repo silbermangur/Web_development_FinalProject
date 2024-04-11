@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet" />
+    <title>Document</title>
+    
+        <style>
+            .inputRow
+            {
+                flex-direction: column;
+                margin-left:auto;
+                margin-right:auto;
+                align-items: flex-start;
+                gap:5px;
+            }
+            .inputRow label
+            {
+                transform:translateX(10px);
+            }   
+            .loginRegisterButton
+            {
+                margin-top:0px;
+            }
+            body
+            {
+                background-image: linear-gradient(to left top, #77b4c5, #3ea7cf, #0097dc, #0084e4, #006ce5, #3b67de, #5362d7, #645dcf, #7a71c8, #8c84bf, #9d98b6, #acacac);
+            }
+        </style>
+</head>
+<body>
+    <div class="LoginRegisterForm">
+        <span class="FormTitle">Login</span>
+        
+        <div class="inputRow">
+            <label class="inputTitle">Email:</label>
+            <input id="email_input" class="inputText" type="text" placeholder="Enter your email..">
+        </div>
+
+        <div class="inputRow">
+            <label class="inputTitle">Password:</label>
+            <input id="password_input" class="inputText" type="password" placeholder="Enter your password..">
+        </div>
+
+        <label id="errorMsg" class="errorMsg"></label>
+        <button class="loginRegisterButton" type="button" onclick="login()">Login</button>
+        <span class="goToPage">don't have an account? <a class="goToPageHref" href="register">register now!</a></span>
+    </div>
+
+    <script>
+
+        //get current loggedin user data from session storage
+        const username_storage = sessionStorage.getItem('username');
+        const email_storage = sessionStorage.getItem('email');
+        //check if a user is logged in
+        if(username_storage && email_storage)
+            window.location.href = 'todos';
+
+        //get the inputs elements
+        const email_input = document.getElementById('email_input');
+        const password_input = document.getElementById('password_input');
+
+        //element to dispaly error messages
+        const errorMsg = document.getElementById('errorMsg');
+
+        //returns true if a string is empty otherwise returns 0
+        function isEmpty(val)
+        {
+            return val.length == 0;
+        }
+
+        //function to handle login - button click
+        function login()
+        {
+            //get current input values
+            const email_val = email_input.value.trim(); //remove trailing spaces
+            const pass_val = password_input.value;
+
+            if(isEmpty(email_val)) //check if email is empty and display error if so
+            {
+                errorMsg.textContent = '*Error: Please enter your e-mail..';
+                return;
+            }
+            if(isEmpty(pass_val)) //check if password is empty and display error if so
+            {
+                errorMsg.textContent = '*Error: Please enter your password..';
+                return;
+            }
+            
+            const data = { user: {email:email_val, password:pass_val}};
+            //send request to server to validate user
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if(data.success === true) //user is verified
+                {
+                    //log the user in by saving his details in session storage
+                    sessionStorage.setItem('email', email_val);
+                    sessionStorage.setItem('username', data.username);
+                    //and then navigating to todos page
+                    window.location.href = "todos";
+                }
+                else
+                {
+                    //error/failed to validate
+                    errorMsg.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                //error/failed to validate
+                errorMsg.textContent = '*Error: Unexpected error.. Try again!';
+            });
+        }
+    </script>
+</body>
+</html>

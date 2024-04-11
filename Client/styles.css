@@ -1,0 +1,130 @@
+
+*
+{
+    margin:0px;
+    padding:0px;
+}
+body
+{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-image: linear-gradient(to right bottom, #77b4c5, #3ea7cf, 
+    #0097dc, #0084e4, #006ce5, #3b67de, #5362d7,
+        #645dcf, #7a71c8, #8c84bf, #9d98b6, #acacac);
+    width:100vw;
+    height:100vh;
+    font-family: 'century gothic';
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family:monospace;
+    
+}
+.LoginRegisterForm
+{
+    padding:30px 60px;
+    display:flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    background-color:rgba(255, 255, 255, 1);
+    border-radius:15px;
+    border-bottom-right-radius: 0px;
+}
+
+.FormTitle
+{
+    font-weight: 700;
+    font-size: 26px;
+    border-bottom:2px solid black;
+    padding-bottom: 5px;
+    padding:10px 20px;
+    margin-bottom:35px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.inputRow
+{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    
+    margin-bottom:15px;
+    
+}
+.inputTitle
+{
+    font-weight: 600;
+    width:130px;
+    font-size:17px;
+    position: relative;
+}
+.inputTitle::before
+{
+    position: absolute;
+    content:'*';
+    color:red;
+    left:-10px;
+    top:5px;
+    font-size:15px;
+}
+
+.inputText
+{
+    padding:5px;
+    font-size:16px;
+}
+
+.inputText::placeholder
+{
+    font-size:15px;
+}
+
+.loginRegisterButton
+{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:10px;
+    padding:7px 50px;
+    background-color:#0C75FF;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+    border:2px solid transparent;
+    outline:none;
+    font-size:17px;
+    transition: .3s ease-in;
+}
+
+.loginRegisterButton:hover
+{
+        color:#0C75FF;
+        border-color:#0C75FF;
+        background-color:transparent;
+}
+
+.errorMsg
+{
+    color:red;
+    font-size:16px;
+    margin: 5px 0px;
+    width:370px;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    font-size:16px;
+}
+.goToPage
+{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:10px;
+    font-weight: 600;
+    font-size:14px;
+}
+.goToPageHref
+{
+    color:blue;   
+}

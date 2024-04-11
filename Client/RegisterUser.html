@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registeration Page</title>
+    <link href="styles.css" rel="stylesheet" />
+    
+    <style>
+        
+
+    </style>
+</head>
+
+<body>
+    <div class="LoginRegisterForm">
+        <span class="FormTitle">Register New User</span>
+        
+        <div class="inputRow">
+            <label class="inputTitle">Email:</label>
+            <input id="email_input" class="inputText" type="text" placeholder="Enter your email..">
+        </div>
+
+        <div class="inputRow">
+            <label class="inputTitle">Password:</label>
+            <input id="password_input" class="inputText" type="password" placeholder="Enter your password..">
+        </div>
+
+        <div class="inputRow">
+            <label class="inputTitle">Re-Password:</label>
+            <input id="repassword_input" class="inputText" type="password" placeholder="Confirm your password..">
+        </div>
+
+        <div class="inputRow">
+            <label class="inputTitle">Username:</label>
+            <input id="username_input" class="inputText" type="text" placeholder="Enter your username..">
+        </div>
+        <label id="errorMsg" class="errorMsg"></label>
+        <button class="loginRegisterButton" type="button" onclick="registerNow()">Register Now</button>
+        <span class="goToPage">already have an account? <a class="goToPageHref" href="login">Login</a></span>
+    </div>
+
+    <script>
+
+        //get all the input elements from DOM
+        const email_input = document.getElementById('email_input');
+        const password_input = document.getElementById('password_input');
+        const repassword_input = document.getElementById('repassword_input');
+        const username_input = document.getElementById('username_input');
+
+        //element to display errors
+        const errorMsg = document.getElementById('errorMsg');
+
+        //regex to check if email format is valid
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        function isEmpty(val) //checks if a string is empty, returns true if so, else returns false
+        {
+            return val.length == 0;
+        }
+
+        function registerNow()
+        {
+            //get current inputs values
+            const email_val = email_input.value.trim();
+            const pass_val = password_input.value;
+            const repass_val = repassword_input.value;
+            const username_val = username_input.value.trim();
+
+            //put the values in an array to check if they are empty
+            const values = [email_val, pass_val, repass_val, username_val]
+            
+            //check if any of the values is empty
+            for(let i = 0; i < values.length;i++)
+            {
+                if(isEmpty(values[i])) //found a value that is empty
+                {
+                    //display error
+                    errorMsg.textContent = '*Error: Please fill all required fields..';
+                    return;
+                }
+            }
+
+            if(pass_val != repass_val) //passwords not equal
+            {
+                //display error
+                errorMsg.textContent = '*Error: Passwords must be the same..';
+                return;
+            }
+
+            if(pass_val.length < 8) //passwords must be >= 8 characters of length.
+            {
+                //display error
+                errorMsg.textContent = '*Error: Password must be of length >= 8';
+                return;
+            }
+
+            if(emailRegex.test(email_val) == false) //email format is not correct
+            {
+                //display error
+                errorMsg.textContent = '*Error: invalid Email. Please try again';
+                return;
+            }
+            
+            //get current logged-in user details
+            const currUser = sessionStorage.getItem('loggedInUser');
+            if(currUser) //check if a user is already logged in
+            {
+                //display error - can't register if a user is already logged in
+                errorMsg.textContent = '*Error: A user is currently logged in..!';
+                return;
+            }
+
+            const data = { user: {email:email_val, password:pass_val, username:username_val }};
+            //send a request to the server to register the new user
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if(data.success === true) //successfully registered the user
+                {
+                    //navigate to login page after successful registeration
+                    window.location.href = "login";
+                }
+                else
+                {
+                    //display error
+                    errorMsg.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                //display error
+                errorMsg.textContent = '*Error: Unexpected error.. Try again!';
+            });
+        }
+    </script>
+</body>
+</html>

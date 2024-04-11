@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List With DataBase</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Stylesheet -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        body {
+            width: 100%;
+            background-color: skyblue;
+        }
+
+        .container {
+            width: 30rem;
+            margin: 2rem auto;
+        }
+
+        .container .title {
+            text-align: center;
+        }
+
+        .container .form {
+            background-color: #fff;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .form input {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            background-color: transparent;
+            outline: none;
+        }
+
+        .form .btn {
+            padding: 0.7rem;
+            background-color: darkblue;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+
+        .lists .todo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+        
+        }
+        .lists
+        {
+            padding-top:10px;
+        }
+        .todo span {
+            cursor: pointer;
+        }
+
+        #welcoming
+        {
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:15px;
+            font-size:28px;
+            background-color:white;
+            padding:5px 50px;
+        }
+        #username, #email
+        {
+            color: red;
+        }
+
+        #logout
+        {
+            color:blue;
+            text-decoration: underline;
+            margin-left:auto;
+            margin-right: 30px;
+            cursor:pointer;
+        }
+
+        #saveToDB
+        {
+            margin-left:auto;
+            margin-right:auto;
+            padding:10px 40px;
+            background-color:white;
+            display:block;
+            cursor:pointer;
+            margin-top:15px;
+            transition: .5s;
+        }
+
+        #saveToDB:hover
+        {
+            background-color: blue;
+            color:white;
+            border-radius:10px;
+            
+        }
+
+        #line
+        {
+            width:100%;
+            height:2px;
+            background-color:#ededed;
+            margin-top:30px;
+        }
+        #saveResult
+        {
+            text-align: center;
+            margin-top:5px;
+            margin-left:auto;
+            margin-right:auto;
+            display:block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="welcoming">
+    <span style="margin-left:auto;">Welcome <span id="username"></span>, your e-mail is: <span id="email"></span></span>
+    <span id="logout" onclick="logout()">Logout</span>
+    </div>
+    <div class="container">
+        <h1 class="title">OOP Todo List</h1>
+        <form class="form" data-form>
+            <input type="text" placeholder="Todo..." data-input>
+            <button class="btn">Submit</button>
+        </form>
+        <div class="lists" data-lists>
+            <!-- INNERHTML -->
+        </div>
+        <div id="line"></div>
+        <button type="button" onclick="saveChanges();" id="saveToDB">Save Changes To Database</button>
+        <span id="saveResult"></span>
+    </div>
+    <!-- Script -->
+    <script src="todo.js"></script>
+    <script>
+
+        //function to handle logging-out
+        function logout()
+        {
+            //remove the user details from session storage
+            sessionStorage.removeItem('username');
+            sessionStorage.removeItem('email');
+            //navigate to login
+            window.location.href = 'login';
+        }
+
+
+    </script>
+</body>
+
+</html>
